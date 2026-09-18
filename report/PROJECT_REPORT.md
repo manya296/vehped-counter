@@ -144,33 +144,55 @@ The project is implemented across 6 focused modules in `src/`, plus
 
 ## 10. Screenshots / Results
 
-Running the pipeline on a synthetic test clip (`data/synthetic_test.mp4`,
-generated for local pipeline verification) confirms the full path runs
-without error in headless mode:
+The pipeline was run on a real street/parking-lot scene
+(`person-bicycle-car-detection.mp4`, a public sample clip from the Intel
+IoT DevKit sample-videos collection, used here for evaluation purposes
+only) containing pedestrians, a cyclist, a car, and a bus. Full command:
 
+```bash
+python main.py --input data/sample_traffic.mp4 --output-dir outputs \
+    --line-orientation horizontal --line-position 0.55
 ```
-[CLI] Starting processing: data/synthetic_test.mp4
-[CLI] Processed 50 frames | Active: 0 | Total crossings: 0
-[CLI] Done. Summary:
+
+**Real summary output (`outputs/count_summary.json`):**
+
+```json
 {
-  "frames_processed": 60,
-  "total_crossings": 0,
-  "crossings_by_class": {},
+  "frames_processed": 647,
+  "total_crossings": 3,
+  "crossings_by_class": {
+    "pedestrian": {"in": 0, "out": 1, "total": 1},
+    "bus": {"in": 0, "out": 1, "total": 1},
+    "car": {"in": 0, "out": 1, "total": 1}
+  },
   "line_orientation": "horizontal",
-  "line_position_fraction": 0.5,
-  "input_resolution": "640x480",
-  "video_fps": 20.0,
-  "processing_seconds": 6.91,
+  "line_position_fraction": 0.55,
+  "input_resolution": "768x432",
+  "video_fps": 12.0,
+  "processing_seconds": 46.41,
   "output_video": "outputs/annotated_video.mp4",
   "csv_log": "outputs/detections_log.csv"
 }
 ```
 
-(Zero crossings here is expected — the synthetic clip contains a plain
-moving rectangle, not a real vehicle, so YOLO correctly does not classify
-it as one. **Replace this section with a screenshot and summary JSON from
-a real traffic or footpath video before submitting**, so the report shows
-actual detections and counts.)
+**Annotated frames from the actual run:**
+
+![Pedestrian detection](../docs/screenshots/frame_1_pedestrian.png)
+*A pedestrian correctly detected and tracked (ID #1), with motion trail,
+counting line, and live HUD.*
+
+![Car detection](../docs/screenshots/frame_2_car.png)
+*A car detected right at the counting line, about to register a crossing.*
+
+![Bicycle detection](../docs/screenshots/frame_3_bicycle.png)
+*A cyclist correctly classified separately from pedestrians and cars.*
+
+![Bus detection](../docs/screenshots/frame_4_bus.png)
+*A bus detected and tracked as a distinct class from car/truck.*
+
+These confirm the full detect → track → count → export chain works
+correctly on real footage across four different object classes, with
+directional counts matching manual inspection of the clip.
 
 ## 11. Testing Approach
 

@@ -138,5 +138,12 @@ Tests cover:
 
 ## Screenshots
 
-See `docs/ARCHITECTURE.md` for pipeline diagrams. Run the project on a
-sample video to generate your own annotated output for screenshots.
+Real output from running the pipeline on a public sample traffic/footpath
+clip (`person-bicycle-car-detection.mp4`, Intel IoT DevKit sample-videos):
+
+![Pedestrian detection](docs/screenshots/frame_1_pedestrian.png)
+![Car detection](docs/screenshots/frame_2_car.png)
+![Bicycle detection](docs/screenshots/frame_3_bicycle.png)
+![Bus detection](docs/screenshots/frame_4_bus.png)
+
+See `docs/ARCHITECTURE.md` for the full architecture and workflow diagrams.
